@@ -5,14 +5,16 @@ require 'fileutils'
 require 'pathname'
 
 class GenR < Thor
-  IMAGE_FILE_EXTS = ['png', 'jpg', 'jpeg', 'tiff']
+  OCClass = Struct.new :name, :elements
 
   desc "create", "Create a resource file R."
   method_option :directory, aliases: ['-d'], desc: 'Resource directory', required: true, type: :string
   method_option :target,    aliases: ['-t'], desc: 'Target file, will append .h, .m for Obj-C', required: true, type: :string
+  method_option :prefix,    aliases: ['-p'], desc: 'Class prefix for generated classes', required: true, type: :string, default: 'YM'
   def create
     directory = File.expand_path options[:directory], Dir.pwd
     target    = File.expand_path options[:target],    Dir.pwd
+    prefix    = options[:prefix].upcase
     # Get all xcassets
     Dir["#{directory}/**/*.xcassets"].each do |asset_folder|
       asset_path = Pathname.new asset_folder
@@ -23,7 +25,6 @@ class GenR < Thor
       end
     end
   end
-
 end
 
 GenR.start
