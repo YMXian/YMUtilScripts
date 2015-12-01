@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'bundler/setup'
+
 require 'thor'
 require 'fileutils'
 require 'pathname'
@@ -42,8 +45,8 @@ class GenService < Thor
 
         objc_h_header "#{class_name}Backend.h", copyright
         objc_import_d "Foundation/Foundation.h"
+        line
         objc_protocol "#{class_name}Backend" do
-          objc_protocol_required
         end
       end
       f.write content
